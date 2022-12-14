@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Input, Form, Label, FormGroup, Button, Table } from 'reactstrap'
+import { Input, Form, Label, FormGroup, Button, Table, Container, Row, Col } from 'reactstrap'
 
 
 
@@ -20,18 +20,17 @@ function Billing() {
     })
 
     useEffect(() => {
-    
-        let list=[]
-        let bill_amt=0
-        if(items.length>0)
-        {
+
+        let list = []
+        let bill_amt = 0
+        if (items.length > 0) {
             list = items?.map((item, index) => {
 
-                bill_amt=bill_amt+item.total_price
+                bill_amt = bill_amt + item.total_price
 
                 return (
                     <>
-    
+
                         <tr key={index}>
                             <td>{index + 1}</td>
                             <td > {item?.product_name}</td>
@@ -46,25 +45,18 @@ function Billing() {
                                 </span>
                             </td>
                             <td>{item?.total_price}</td>
-                            <td> <Button onClick={() =>
+                            <td className="p-2"> <Button onClick={() =>
                                 remove_product(item)}>
                                 Remove Product
                             </Button></td>
                         </tr>
-    
-    
-    
-    
+
                     </>
-    
+
                 )
-    
-    
+
             })
         }
-        
-
-
 
         const Product_table = () => {
             return (
@@ -91,25 +83,47 @@ function Billing() {
                 </>
             )
         }
-       
+
         setBill_Amt(bill_amt)
         setProduct_list(Product_table)
-        
-       
-           
-       
+
+
+
+
     }, [items])
 
 
     function add_product() {
 
-        setItems([...items, current_item])
-        setcurrent_item({
-            product_name: "",
-            quantity: 0,
-            price: 0,
-            total_price: 0
-        })
+        if (current_item.product_name && current_item.price && current_item.quantity) {
+
+            const items_mapping=items.filter((item)=>{
+                return item.product_name==current_item.product_name
+            })
+            if(items_mapping.length!=0)
+            {
+
+                alert("Product Already Added")
+               
+            }
+            else{
+
+                setItems([...items, current_item])
+            }
+
+            
+            setcurrent_item({
+                product_name: "",
+                quantity: 0,
+                price: 0,
+                total_price: 0
+            })
+            
+
+        }
+        else {
+            alert("Fill All Form details")
+        }
 
     }
 
@@ -119,7 +133,7 @@ function Billing() {
             return item.product_name != selected_product.product_name
         })
         setItems(updated_items)
-       
+
     }
 
     function updateitem(selected_product, type) {
@@ -127,54 +141,47 @@ function Billing() {
             if (item.product_name == selected_product.product_name) {
                 if (type == 'increase') {
                     item.quantity = parseInt(selected_product.quantity) + 1
-                    item.total_price = item.price*item.quantity
-                    
+                    item.total_price = item.price * item.quantity
+
                 }
                 else {
-                    item.quantity =  parseInt(selected_product.quantity) - 1
-                    item.total_price = item.price*item.quantity
-                   
-                    
+                    item.quantity = parseInt(selected_product.quantity) - 1
+                    item.total_price = item.price * item.quantity
+
                 }
             }
-                
-           return item
-           
-            
+
+            return item
+
+
         })
 
         // TO Remove any items whose quantity becomes zero
-        updated_items=updated_items.filter((item)=>
-        {
-            return item.quantity!=0
+        updated_items = updated_items.filter((item) => {
+            return item.quantity != 0
         })
 
         setItems(updated_items)
-       
-
 
     }
 
-
-
-
-
-
-
-
-
-
-
     return (
         <>
-            <div>
+            <div className="container" >
+                <h1 className="offset-4 col-6 mt-4">
+                    Product Billing
+                </h1>
 
-                <Form>
-                    <FormGroup>
-                        <Label for="Name">
+                <Form className="form" >
+
+                   <FormGroup className="row">
+
+                       <Label for="Name" className="col-4">
                             Name
                         </Label>
-                        <Input
+                      <Input
+                            className="col-6"
+
                             id="Name"
                             name="Name"
                             placeholder="Enter Name"
@@ -182,18 +189,27 @@ function Billing() {
                             value={UserDetails.name}
                             onChange={(e) => setUserDetails({ ...UserDetails, name: e.target.value })}
                         />
-                    </FormGroup>
+
+
+                    </FormGroup >
+
                     <FormGroup>
                         <Label for="Phone No">
                             Phone Number
                         </Label>
                         <Input
                             id="Phone No"
+
                             name="Phone No"
                             placeholder="Enter Phone Number"
                             type="number"
+
                             value={UserDetails.phoneno}
-                            onChange={(e) => setUserDetails({ ...UserDetails, phoneno: e.target.value })}
+
+                            onChange={(e) => {
+                                setUserDetails({ ...UserDetails, phoneno: e.target.value })
+
+                            }}
                         />
                     </FormGroup>
                     <FormGroup>
@@ -209,7 +225,7 @@ function Billing() {
                             onChange={(e) => setcurrent_item({ ...current_item, product_name: e.target.value })}
                         />
                     </FormGroup>
-                    <FormGroup>
+                    <FormGroup >
                         <Label for="product_price">
                             Price
                         </Label>
@@ -225,7 +241,7 @@ function Billing() {
                             })}
                         />
                     </FormGroup>
-                    <FormGroup>
+                    <FormGroup >
                         <Label for="quantity">
                             Quantity
                         </Label>
@@ -256,7 +272,7 @@ function Billing() {
                         />
                     </FormGroup>
 
-                    <FormGroup>
+                    <FormGroup >
                         <Button onClick={() => add_product()}>
                             Add Product
                         </Button>
@@ -264,25 +280,33 @@ function Billing() {
 
 
                 </Form>
-                <div>
-                    {product_list}
+
+                <div className="Bill">
+                    <div>
+                        <h4>
+                            <span className="p-3">
+                                Customer Name : {UserDetails.name}
+                            </span>
+                            <span>
+                                Phone No : {UserDetails.phoneno}
+
+                            </span>
+
+                        </h4>
+
+                    </div>
+
+
+                    <div>
+                        {product_list}
+                    </div>
+                    <div className="offset-5">
+
+                        Bill Amount : Rs {Bill_Amt}
+                    </div>
+
                 </div>
-
-
-                <div>
-                    <span>
-                        Bill Amount : {Bill_Amt}
-                    </span>
-                </div>
-
-
             </div>
-
-
-
-
-
-
         </>
 
     );
