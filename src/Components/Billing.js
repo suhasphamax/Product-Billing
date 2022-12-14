@@ -22,9 +22,13 @@ function Billing() {
     useEffect(() => {
     
         let list=[]
+        let bill_amt=0
         if(items.length>0)
         {
             list = items?.map((item, index) => {
+
+                bill_amt=bill_amt+item.total_price
+
                 return (
                     <>
     
@@ -87,8 +91,12 @@ function Billing() {
                 </>
             )
         }
-
+       
+        setBill_Amt(bill_amt)
         setProduct_list(Product_table)
+        
+       
+           
        
     }, [items])
 
@@ -96,7 +104,6 @@ function Billing() {
     function add_product() {
 
         setItems([...items, current_item])
-        setBill_Amt((prev_amt) => current_item.total_price + prev_amt)
         setcurrent_item({
             product_name: "",
             quantity: 0,
@@ -112,7 +119,7 @@ function Billing() {
             return item.product_name != selected_product.product_name
         })
         setItems(updated_items)
-        setBill_Amt((prev_amt) => prev_amt - selected_product.total_price)
+       
     }
 
     function updateitem(selected_product, type) {
