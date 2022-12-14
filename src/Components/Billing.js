@@ -14,50 +14,69 @@ function Billing() {
     const [product_list, setProduct_list] = useState()
     const [current_item, setcurrent_item] = useState({
         product_name: "",
-        quantity: 0,
         price: 0,
+        quantity: 0,
         total_price: 0
     })
 
     useEffect(() => {
+    
+        let list=[]
+        if(items.length>0)
+        {
+            list = items?.map((item, index) => {
+                return (
+                    <>
+    
+                        <tr key={index}>
+                            <td>{index + 1}</td>
+                            <td > {item?.product_name}</td>
+                            <td>{item?.price}</td>
+                            <td>
+                                <span>
+                                    <Button onClick={() => updateitem(item, "decrease")}>-</Button>
+                                </span>
+                                {item?.quantity}
+                                <span>
+                                    <Button onClick={() => updateitem(item, "increase")}>+</Button>
+                                </span>
+                            </td>
+                            <td>{item?.total_price}</td>
+                            <td> <Button onClick={() =>
+                                remove_product(item)}>
+                                Remove Product
+                            </Button></td>
+                        </tr>
+    
+    
+    
+    
+                    </>
+    
+                )
+    
+    
+            })
+        }
+        
 
-        const list = items?.map((item, index) => {
-            return (
-                <>
-
-                    <tr key={index}>
-                        <td > {item.product_name}</td>
-                        <td>{item.price}</td>
-                        <td>{item.quantity}</td>
-                        <td>{item.total_price}</td>
-                        <td> <Button onClick={() =>
-                            remove_product(item)}>
-                            Remove Product
-                        </Button></td>
-                    </tr>
-
-                    
 
 
-                    
-                </>
-
-            )
-
-
-        })
         const Product_table = () => {
             return (
                 <>
 
-                    <Table>
+                    <Table bordered>
 
                         <thead>
                             <tr>
-                               
+                                <th scope="row">SL NO</th>
                                 <th>Product Name</th>
                                 <th>Price</th>
-                                <th>Quantity</th>
+                                <th>Quantity
+
+
+                                </th>
                                 <th>Total Price</th>
                             </tr>
                         </thead>
@@ -70,8 +89,8 @@ function Billing() {
         }
 
         setProduct_list(Product_table)
+       
     }, [items])
-
 
 
     function add_product() {
@@ -85,9 +104,6 @@ function Billing() {
             total_price: 0
         })
 
-
-
-
     }
 
     function remove_product(selected_product) {
@@ -97,12 +113,42 @@ function Billing() {
         })
         setItems(updated_items)
         setBill_Amt((prev_amt) => prev_amt - selected_product.total_price)
+    }
 
+    function updateitem(selected_product, type) {
+        let updated_items = items?.map((item) => {
+            if (item.product_name == selected_product.product_name) {
+                if (type == 'increase') {
+                    item.quantity = parseInt(selected_product.quantity) + 1
+                    item.total_price = item.price*item.quantity
+                    
+                }
+                else {
+                    item.quantity =  parseInt(selected_product.quantity) - 1
+                    item.total_price = item.price*item.quantity
+                   
+                    
+                }
+            }
+                
+           return item
+           
+            
+        })
 
+        // TO Remove any items whose quantity becomes zero
+        updated_items=updated_items.filter((item)=>
+        {
+            return item.quantity!=0
+        })
 
+        setItems(updated_items)
+       
 
 
     }
+
+
 
 
 
@@ -180,7 +226,7 @@ function Billing() {
                             id="quantity"
                             name="quantity"
                             placeholder="Enter Quantity"
-                            type="text"
+                            type="number"
                             value={current_item.quantity}
                             onChange={(e) => setcurrent_item({
                                 ...current_item, quantity: e.target.value,
