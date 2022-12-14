@@ -21,7 +21,7 @@ function Billing() {
 
     useEffect(() => {
 
-        const list = items.map((item, index) => {
+        const list = items?.map((item, index) => {
             return (
 
                 <div key={index}>
@@ -38,6 +38,12 @@ function Billing() {
                         <span>
                         {item.total_price}
                         </span>
+                        <span>
+                            <Button onClick={()=>
+                            remove_product(item)}>
+                                Remove Product
+                            </Button>
+                        </span>
                     
                     
                     </div>
@@ -45,9 +51,6 @@ function Billing() {
 
                    
                 </div>
-
-
-
 
             )
 
@@ -73,6 +76,25 @@ function Billing() {
         
 
     }
+
+    function remove_product(selected_product) {
+
+        let updated_items=items.filter((item)=>
+        {
+           return item.product_name!=selected_product.product_name
+        })
+        setItems(updated_items)
+        setBill_Amt((prev_amt)=>prev_amt-selected_product.total_price)
+        
+        
+        
+        
+
+    }
+
+
+
+
 
 
 
