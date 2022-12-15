@@ -1,5 +1,5 @@
 import './App.css';
-import Billing from './Components/Billing';
+import Billing from './pages/Billing/Billing';
 
 
 
