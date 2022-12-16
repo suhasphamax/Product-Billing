@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { Button, Table } from 'reactstrap'
+import { PostBill } from "../../services/BillingService";
 
 function BillingTable(props) {
     let items = props.items
@@ -114,6 +115,14 @@ function BillingTable(props) {
             </div>
             <div className="offset-4 mb-4">
                 <b> Bill Amount: Rs {props.Bill_Amt}</b>
+            </div>
+            <div className="offset-4 mb-4">
+                <Button onClick={()=>PostBill({"data":{
+                    "items":props.items                  
+
+                }})}>
+                    Save Bill
+                </Button>
             </div>
 
         </>
