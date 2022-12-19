@@ -2,21 +2,22 @@ import './App.css';
 import Billing from './pages/Billing/Billing';
 import {Routes,Route} from 'react-router-dom'
 import SignUp from './pages/Authentication/SignUp';
-import SignIn from './pages/Authentication/SignIn';
+import Login from './pages/Authentication/Login';
+
 
 
 
 function App() {
-  
+
   return (
     <div className="App">
       <Routes>
-        <Route path="/" element={<SignUp/>}></Route>
-        <Route path="/signin" element={<SignIn/>}></Route>
-        <Route path="/billing" element={<Billing/>}></Route>
+        <Route path="/signup" element={<SignUp/>}></Route>
+        <Route path="/login" element={<Login/>}></Route>
+        <Route path="/" element={<Billing/>}></Route>
 
       </Routes>
-     
+
     </div>
   );
 }

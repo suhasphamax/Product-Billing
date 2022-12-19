@@ -13,41 +13,32 @@ function ProductForm(props) {
     function add_product() {
 
         if (current_item.product_name && current_item.price && current_item.quantity) {
-    
+
             const items_mapping=props.items.filter((item)=>{
                 return item.product_name==current_item.product_name
             })
             if(items_mapping.length!=0)
             {
-    
+
                 alert("Product Already Added")
-               
+
             }
             else{
-    
+
                 props.setItems([...props.items, current_item])
             }
-    
-            
             setcurrent_item({
                 product_name: "",
                 quantity: 0,
                 price: 0,
                 total_price: 0
             })
-            
-    
-        }
+       }
         else {
             alert("Fill All Form details")
         }
-    
     }
-
-  
-    
    return (
-
         <>
             <Form className="form" >
                 <FormGroup className="row">

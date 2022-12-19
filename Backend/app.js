@@ -16,7 +16,7 @@ app.use(express.json());
 
 
 
-// app.use('/authentication',authentication);
+app.use('/auth',authentication);
 app.use('/billing',billing);
 
 

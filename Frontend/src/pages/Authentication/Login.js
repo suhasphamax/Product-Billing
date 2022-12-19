@@ -1,41 +1,23 @@
 import React, { useState } from "react";
 import { Input, Form, Label, FormGroup, Button, Table, Container, Row, Col } from 'reactstrap'
 
-import { PostSignUp } from "../../services/AuthApi";
+import { PostLoginIn } from "../../services/AuthApi";
 
-function SignUp() {
+function Login ()
+{
 
     const [UserDetails, setUserDetails] = useState(({
-        name: "",
         email: "",
-        phoneno: "",
         password: ""
-
     }));
 
     return (
         <>
             <div className="container">
-                <div className="ml-4 mt-2">
-                    <h3>
-                        SignUp
-                    </h3>
-                </div>
+                <h3>
+                    SignIn
+                </h3>
                 <Form className="form" >
-                    <FormGroup className="row">
-                        <Label for="Name" className="col-4">
-                            Name
-                        </Label>
-                        <Input
-                            className="col-6"
-                            id="Name"
-                            name="Name"
-                            placeholder="Enter Name"
-                            type="text"
-                            value={UserDetails.name}
-                            onChange={(e) => setUserDetails({ ...UserDetails, name: e.target.value })}
-                        />
-                    </FormGroup>
                     <FormGroup className="row">
                         <Label for="Email" className="col-4">
                             Email
@@ -48,21 +30,6 @@ function SignUp() {
                             type="email"
                             value={UserDetails.email}
                             onChange={(e) => setUserDetails({ ...UserDetails, email: e.target.value })}
-                        />
-                    </FormGroup>
-                    <FormGroup>
-                        <Label for="Phone No">
-                            Phone Number
-                        </Label>
-                        <Input
-                            id="Phone No"
-                            name="Phone No"
-                            placeholder="Enter Phone Number"
-                            type="number"
-                            value={UserDetails.phoneno}
-                            onChange={(e) => {
-                                setUserDetails({ ...UserDetails, phoneno: e.target.value })
-                            }}
                         />
                     </FormGroup>
                     <FormGroup className="row">
@@ -80,13 +47,17 @@ function SignUp() {
                         />
                     </FormGroup>
                     <FormGroup className="row">
-                        <Button onClick={() => { PostSignUp({ "UserDetails": UserDetails }) }}>
-                            SignUp
+                        <Button onClick={() => { PostLoginIn({ "UserDetails": UserDetails }) }}>
+                            SignIn
                         </Button>
                     </FormGroup>
                 </Form>
             </div>
+
+
         </>
     )
+
+
 }
-export default SignUp;
+export default Login;
