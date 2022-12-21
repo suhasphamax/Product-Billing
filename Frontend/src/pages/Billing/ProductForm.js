@@ -4,18 +4,18 @@ import { Input, Form, Label, FormGroup, Button, Table, Container, Row, Col } fro
 function ProductForm(props) {
 
     const [current_item, setcurrent_item] = useState({
-        product_name: "",
+        productName: "",
         price: 0,
         quantity: 0,
-        total_price: 0
+        totalPrice: 0
     })
 
     function add_product() {
 
-        if (current_item.product_name && current_item.price && current_item.quantity) {
+        if (current_item.productName && current_item.price && current_item.quantity) {
 
             const items_mapping=props.items.filter((item)=>{
-                return item.product_name==current_item.product_name
+                return item.productName==current_item.productName
             })
             if(items_mapping.length!=0)
             {
@@ -28,10 +28,10 @@ function ProductForm(props) {
                 props.setItems([...props.items, current_item])
             }
             setcurrent_item({
-                product_name: "",
+                productName: "",
                 quantity: 0,
                 price: 0,
-                total_price: 0
+                totalPrice: 0
             })
        }
         else {
@@ -52,8 +52,8 @@ function ProductForm(props) {
                         name="Name"
                         placeholder="Enter Name"
                         type="text"
-                        value={props.UserDetails.name}
-                        onChange={(e) => props.setUserDetails({ ...props.UserDetails, name: e.target.value })}
+                        value={props.UserDetails.customerName}
+                        onChange={(e) => props.setUserDetails({ ...props.UserDetails, customerName: e.target.value })}
                     />
                 </FormGroup>
                  <FormGroup>
@@ -65,23 +65,23 @@ function ProductForm(props) {
                         name="Phone No"
                         placeholder="Enter Phone Number"
                         type="number"
-                        value={props.UserDetails.phoneno}
+                        value={props.UserDetails.contactNumber}
                         onChange={(e) => {
-                            props.setUserDetails({ ...props.UserDetails, phoneno: e.target.value })
+                            props.setUserDetails({ ...props.UserDetails, contactNumber: e.target.value })
                         }}
                     />
                 </FormGroup>
                 <FormGroup>
-                    <Label for="product_name">
+                    <Label for="productName">
                         Product Name
                     </Label>
                     <Input
-                        id="product_name"
-                        name="product_name"
+                        id="productName"
+                        name="productName"
                         placeholder="Enter Product Name"
                         type="text"
-                        value={current_item.product_name}
-                        onChange={(e) => setcurrent_item({ ...current_item, product_name: e.target.value })}
+                        value={current_item.productName}
+                        onChange={(e) => setcurrent_item({ ...current_item, productName: e.target.value })}
                     />
                 </FormGroup>
                 <FormGroup >
@@ -96,7 +96,7 @@ function ProductForm(props) {
                         value={current_item.price}
                         onChange={(e) => setcurrent_item({
                             ...current_item, price: e.target.value,
-                            total_price: e.target.value * current_item.quantity
+                            totalPrice: e.target.value * current_item.quantity
                         })}
                     />
                 </FormGroup>
@@ -112,7 +112,7 @@ function ProductForm(props) {
                         value={current_item.quantity}
                         onChange={(e) => setcurrent_item({
                             ...current_item, quantity: e.target.value,
-                            total_price: current_item.price * e.target.value
+                            totalPrice: current_item.price * e.target.value
                         })}
                     />
                 </FormGroup>

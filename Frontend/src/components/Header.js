@@ -25,7 +25,7 @@ export function Header() {
       <Navbar >
         <NavbarBrand className="offset-5"> Product Billing</NavbarBrand>
 
-          <NavbarText>Login</NavbarText>
+
 
       </Navbar>
     </div>

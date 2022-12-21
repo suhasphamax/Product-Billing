@@ -3,7 +3,6 @@ const{Bill} = require('../models/index')
 const Product = require('../models/index').Product
 const router = express.Router();
 
-
 function Verify_Bill_Amount(items,billAmount)
 {
    let total=0;
@@ -19,8 +18,6 @@ function Verify_Bill_Amount(items,billAmount)
    return billAmount
 
 }
-
-
 router.post('/', async (req, res) => {
    // console.log(req.body.data)
 

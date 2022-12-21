@@ -1,44 +1,43 @@
-import React, { useEffect } from "react";
-import { Button, Table } from 'reactstrap'
+import React, { useEffect, useState } from "react";
+import { Table, Button, Modal, ModalFooter, ModalHeader, ModalBody } from 'reactstrap'
 import { PostBill } from "../../services/BillingApi";
 
 function BillingTable(props) {
+
+    const [billStatus, setBillStatus] = useState(null)
+    const [modal, setModal] = useState(false);
+
+    // Toggle for Modal
+    const toggle = () => setModal(!modal);
+
     let items = props.items
 
     function remove_product(selected_product) {
-
         let updated_items = items.filter((item) => {
-            return item.product_name != selected_product.product_name
+            return item.productName != selected_product.productName
         })
         props.setItems(updated_items)
-
     }
-
     function updateitem(selected_product, type) {
         let updated_items = items?.map((item) => {
-            if (item.product_name == selected_product.product_name) {
+            if (item.productName == selected_product.productName) {
                 if (type == 'increase') {
                     item.quantity = parseInt(selected_product.quantity) + 1
-                    item.total_price = item.price * item.quantity
-
+                    item.totalPrice = item.price * item.quantity
                 }
                 else {
                     item.quantity = parseInt(selected_product.quantity) - 1
-                    item.total_price = item.price * item.quantity
-
+                    item.totalPrice = item.price * item.quantity
                 }
             }
             return item
-
         })
 
         // TO Remove any items whose quantity becomes zero
         updated_items = updated_items.filter((item) => {
             return item.quantity != 0
         })
-
         props.setItems(updated_items)
-
     }
 
     useEffect(() => {
@@ -48,13 +47,13 @@ function BillingTable(props) {
         if (items.length > 0) {
             list = items?.map((item, index) => {
 
-                bill_amt = bill_amt + item.total_price
+                bill_amt = bill_amt + item.totalPrice
 
                 return (
                     <>
                         <tr key={index}>
                             <td>{index + 1}</td>
-                            <td > {item?.product_name}</td>
+                            <td > {item?.productName}</td>
                             <td>{item?.price}</td>
                             <td>
                                 <span>
@@ -65,7 +64,7 @@ function BillingTable(props) {
                                     <Button onClick={() => updateitem(item, "increase")}>+</Button>
                                 </span>
                             </td>
-                            <td>{item?.total_price}</td>
+                            <td>{item?.totalPrice}</td>
                             <td className="p-2"> <Button onClick={() =>
                                 remove_product(item)}>
                                 Remove Product
@@ -78,11 +77,9 @@ function BillingTable(props) {
 
             })
         }
-
         const Product_table = () => {
             return (
                 <>
-
                     <Table bordered>
 
                         <thead>
@@ -102,10 +99,46 @@ function BillingTable(props) {
                 </>
             )
         }
-
         props.setBill_Amt(bill_amt)
         props.setProduct_list(Product_table)
     }, [props.items])
+
+    async function SubmitBill() {
+        if (props.items.length != 0 && props.UserDetails.customerName != ""
+        && props.UserDetails.contactNumber && props.billAmount != 0) {
+            let response = await PostBill({
+                "data": {
+                    "items": props.items,
+                    "UserDetails": props.UserDetails,
+                    "billAmount": props.Bill_Amt
+                }
+            })
+            setBillStatus(response)
+        }
+        else{
+            alert("Fill All Bill Details.")
+        }
+
+
+
+    }
+    useEffect(() => {
+
+        if (billStatus?.data) {
+            setModal(true)
+        }
+        if (billStatus?.status == 200) {
+            props.setBill_Amt(0)
+            props.setItems([])
+            props.setUserDetails(
+                {
+                    customerName: "",
+                    contactNumber: ""
+                }
+            )
+        }
+
+    }, [billStatus])
 
     return (
         <>
@@ -117,16 +150,19 @@ function BillingTable(props) {
                 <b> Bill Amount: Rs {props.Bill_Amt}</b>
             </div>
             <div className="offset-4 mb-4">
-                <Button onClick={()=>PostBill({"data":{
-                    "items":props.items            
-
-                }})}>
+                <Button onClick={() => SubmitBill()}>
                     Save Bill
                 </Button>
             </div>
 
+            <Modal isOpen={modal}>
+                <ModalHeader toggle={toggle} >Product Billing</ModalHeader>
+                <ModalBody>
+                    {billStatus?.data}
+                </ModalBody>
+            </Modal>
+
         </>
     )
-
 }
 export default BillingTable;
