@@ -12,9 +12,6 @@ function App() {
   return (
     <div className="App">
       <Routes>
-        {/* <Route path="/signup" element={<SignUp/>}></Route>
-        <Route path="/login" element={<Login/>}></Route> */}
-        {/* <Route path={`${ process.env.REACT_APP_BASE_URL}/`} element={<Billing/>}></Route> */}
         <Route path={"/"} element={<Billing/>}></Route>
       </Routes>
 
